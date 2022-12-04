@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soft_eng/ingredients_json.dart';
 import 'package:soft_eng/main_json.dart';
+import 'package:soft_eng/results_page.dart';
 
 class FinderPage extends StatefulWidget {
   const FinderPage({super.key});
@@ -35,7 +36,8 @@ class _FinderPageState extends State<FinderPage> {
         elevation: 0,
         centerTitle: false,
         title: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -54,7 +56,8 @@ class _FinderPageState extends State<FinderPage> {
         ),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+            padding:
+                const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
             child: TextButton(
                 onPressed: () {},
                 child: const Icon(
@@ -243,18 +246,27 @@ class _FinderPageState extends State<FinderPage> {
                 child: Center(
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.search_outlined,
                       color: Color(0xFFfdeeea),
                       size: 22,
                     ),
                     SizedBox(width: 5),
-                    Text(
-                      "Search",
-                      style: TextStyle(
-                          color: Color(0xFFfdeeea),
-                          fontWeight: FontWeight.bold),
+                    InkWell(
+                      onTap: (() {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => const ResultPage()),
+                        );
+                      }),
+                      child: const Text(
+                        "Search",
+                        style: TextStyle(
+                            color: Color(0xFFfdeeea),
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 )),
