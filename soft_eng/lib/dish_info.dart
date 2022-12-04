@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soft_eng/finder_page.dart';
+import 'package:soft_eng/ingredients_json.dart';
+import 'package:soft_eng/lasagna_json.dart';
 import 'package:soft_eng/main_json.dart';
 
 class DishInfo extends StatefulWidget {
@@ -20,9 +22,9 @@ class _DishInfoState extends State<DishInfo> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
         child: Stack(children: <Widget>[
           SizedBox(
             width: size.height - 80,
@@ -104,39 +106,114 @@ class _DishInfoState extends State<DishInfo> {
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Container(
-                              height: 90,
-                              width: 90,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFFef4642),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          image: const DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/images/dish1.png"))),
-                                    ),
-                                    const Text(
-                                      "data",
-                                      style: TextStyle(color: Colors.black),
-                                    )
-                                  ],
-                                ),
-                              ))
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                            children: List.generate(lasagnaIngredients.length,
+                                (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Container(
+                                height: 140,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFfdeeea),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 75,
+                                        height: 75,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    lasagnaIngredients[index]
+                                                        ['img']))),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            lasagnaIngredients[index]['name'],
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            lasagnaIngredients[index]
+                                                ['details'],
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 11),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          );
+                        })),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        width: 350,
+                        height: 219,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFfdeeea),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 10, bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Procedure",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(height: 5),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(lasagnaProcedure.length,
+                                    (index) {
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        lasagnaProcedure[index],
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 14),
+                                      ),
+                                      const SizedBox(height: 3)
+                                    ],
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
