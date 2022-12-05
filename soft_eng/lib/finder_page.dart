@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:soft_eng/ingredients_json.dart';
 import 'package:soft_eng/main_json.dart';
+import 'package:soft_eng/models/recipe_model.dart';
 import 'package:soft_eng/results_page.dart';
+import 'package:http/http.dart' as http;
 
 class FinderPage extends StatefulWidget {
   const FinderPage({super.key});
@@ -15,6 +19,26 @@ class _FinderPageState extends State<FinderPage> {
   int count1 = 0;
   int count2 = 0;
   int count3 = 0;
+
+  List<RecipeModel> recipes = <RecipeModel>[];
+
+  String appId = "a9d37c70";
+  String applicationKeys = "266a0142cc19b5587bf5ea456d1344bd";
+
+  getRecipes(String query) async {
+    String url =
+        "https://api.edamam.com/search?q=$query&app_id=a9d37c70&app_key=7cf7b8d42957f39b684420d8f20afd0b";
+
+    var response = await http.get(Uri.parse(url));
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+    jsonData["hits"].forEach((element) {
+      RecipeModel recipeModel =
+          RecipeModel(image: '1', label: '1', url: '1', source: '1');
+      recipeModel = RecipeModel.fromMap(element["recipe"]);
+      recipes.add(recipeModel);
+    });
+  }
 
   @override
   void dispose() {
@@ -73,6 +97,8 @@ class _FinderPageState extends State<FinderPage> {
     );
   }
 
+  storeData() {}
+
   Widget getBody() {
     return Padding(
       padding: const EdgeInsets.only(left: 30, top: 17, right: 30, bottom: 10),
@@ -113,18 +139,10 @@ class _FinderPageState extends State<FinderPage> {
               const SizedBox(width: 5),
               InkWell(
                 onTap: () {
-                  if (count1 < 3) {
+                  setState(() {
                     ingredients1.add(myController.text);
-                    count1++;
-                  }
-                  if (count1 > 3 && count2 < 3) {
-                    ingredients2.add(myController.text);
-                    count2++;
-                  }
-                  if (count3 < 3 && count2 > 3) {
-                    ingredients3.add(myController.text);
-                    count3++;
-                  }
+                  });
+                  getRecipes(myController.text);
                   clearText();
                 },
                 child: Container(
@@ -146,90 +164,48 @@ class _FinderPageState extends State<FinderPage> {
           const SizedBox(height: 15),
           Container(
             width: 320,
-            height: 176,
+            height: 400,
             decoration: BoxDecoration(
                 color: const Color(0xFFfdeeea),
                 borderRadius: BorderRadius.circular(5)),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 15, left: 17, right: 17),
-              child: Column(
-                children: [
-                  Row(children: const [
-                    Text(
-                      "Your Ingredients",
-                      style: TextStyle(color: Color(0xFFef4642)),
-                    )
-                  ]),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(ingredients1.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: Container(
-                          height: 30,
-                          width: 90,
-                          decoration: BoxDecoration(
-                              color: const Color(0xFFef4642),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              ingredients1[index],
-                              style: const TextStyle(color: Color(0xFFfdeeea)),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15, left: 11, right: 11),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(children: const [
+                      Text(
+                        "Your Ingredients",
+                        style: TextStyle(color: Color(0xFFef4642)),
+                      )
+                    ]),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: List.generate(ingredients1.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Container(
+                            height: 30,
+                            width: 90,
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFef4642),
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Center(
+                              child: Text(
+                                ingredients1[index],
+                                style:
+                                    const TextStyle(color: Color(0xFFfdeeea)),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(ingredients2.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: Container(
-                          height: 30,
-                          width: 90,
-                          decoration: BoxDecoration(
-                              color: const Color(0xFFef4642),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              ingredients2[index],
-                              style: const TextStyle(color: Color(0xFFfdeeea)),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(ingredients3.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: Container(
-                          height: 30,
-                          width: 90,
-                          decoration: BoxDecoration(
-                              color: const Color(0xFFef4642),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              ingredients3[index],
-                              style: const TextStyle(color: Color(0xFFfdeeea)),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  )
-                ],
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -252,13 +228,15 @@ class _FinderPageState extends State<FinderPage> {
                       color: Color(0xFFfdeeea),
                       size: 22,
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     InkWell(
                       onTap: (() {
+                        print("${recipes.toString()}");
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                              pageBuilder: (_, __, ___) => const ResultPage()),
+                              pageBuilder: (_, __, ___) =>
+                                  ResultPage(myRecipes: recipes)),
                         );
                       }),
                       child: const Text(

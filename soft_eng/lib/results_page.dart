@@ -4,9 +4,13 @@ import 'package:soft_eng/finder_page.dart';
 import 'package:soft_eng/ingredients_json.dart';
 import 'package:soft_eng/main_json.dart';
 import 'package:soft_eng/result_json.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'models/recipe_model.dart';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({super.key});
+  List<RecipeModel> myRecipes;
+  ResultPage({super.key, required this.myRecipes});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -95,7 +99,7 @@ class _ResultPageState extends State<ResultPage> {
                             color: Color(0xFFef4642), fontSize: 15),
                         decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Input Ingredients again",
+                            hintText: "Input more Ingredients",
                             hintStyle: TextStyle(color: Color(0xFFef4642)),
                             prefixIcon: Icon(
                               Icons.add,
@@ -104,19 +108,11 @@ class _ResultPageState extends State<ResultPage> {
                 const SizedBox(width: 5),
                 InkWell(
                   onTap: () {
-                    if (count1 < 3) {
-                      ingredients1.add(myController.text);
-                      count1++;
-                    }
-                    if (count1 > 3 && count2 < 3) {
-                      ingredients2.add(myController.text);
-                      count2++;
-                    }
-                    if (count3 < 3 && count2 > 3) {
-                      ingredients3.add(myController.text);
-                      count3++;
-                    }
-                    clearText();
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const FinderPage()),
+                    );
                   },
                   child: Container(
                     height: 45,
@@ -137,7 +133,7 @@ class _ResultPageState extends State<ResultPage> {
             ),
             const SizedBox(height: 10),
             Column(
-              children: List.generate(results1.length, (index) {
+              children: List.generate(widget.myRecipes.length, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(
                       left: 2, right: 2, bottom: 5, top: 10),
@@ -149,46 +145,59 @@ class _ResultPageState extends State<ResultPage> {
                             pageBuilder: (_, __, ___) => const DishInfo()),
                       );
                     },
-                    child: Container(
-                      width: 320,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                              image: AssetImage(results1[index]['img']),
-                              fit: BoxFit.cover)),
-                      child: Padding(
+                    child: Stack(children: [
+                      Container(
+                        width: 320,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                                image:
+                                    NetworkImage(widget.myRecipes[index].image),
+                                fit: BoxFit.cover)),
+                      ),
+                      Container(
+                        width: 320,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            gradient: LinearGradient(colors: [
+                              Colors.black.withOpacity(0.95),
+                              Colors.black.withOpacity(0)
+                            ])),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.all(8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              results1[index]['name'],
+                              widget.myRecipes[index].label,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 2),
-                            Text(
-                              results1[index]['num'],
-                              style: const TextStyle(
+                            const Text(
+                              "10 ingredients",
+                              style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 9),
                             ),
                             const SizedBox(height: 2),
                             Row(
-                              children: [
-                                const Icon(Icons.timelapse,
+                              children: const [
+                                Icon(Icons.timelapse,
                                     color: Colors.white, size: 10),
-                                const SizedBox(
+                                SizedBox(
                                   width: 2,
                                 ),
                                 Text(
-                                  results1[index]['time'],
-                                  style: const TextStyle(
+                                  '5 mins',
+                                  style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 9),
@@ -198,7 +207,7 @@ class _ResultPageState extends State<ResultPage> {
                           ],
                         ),
                       ),
-                    ),
+                    ]),
                   ),
                 );
               }),
