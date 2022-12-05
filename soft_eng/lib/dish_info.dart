@@ -3,9 +3,22 @@ import 'package:soft_eng/finder_page.dart';
 import 'package:soft_eng/ingredients_json.dart';
 import 'package:soft_eng/lasagna_json.dart';
 import 'package:soft_eng/main_json.dart';
+import 'package:soft_eng/models/recipe_model.dart';
 
 class DishInfo extends StatefulWidget {
-  const DishInfo({super.key});
+  String label;
+  String image;
+  String source;
+  String url;
+  List<dynamic> ingredients;
+
+  DishInfo(
+      {super.key,
+      required this.label,
+      required this.image,
+      required this.url,
+      required this.source,
+      required this.ingredients});
 
   @override
   State<DishInfo> createState() => _DishInfoState();
@@ -35,10 +48,10 @@ class _DishInfoState extends State<DishInfo> {
                   children: [
                     Container(
                       height: 300,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                           color: Colors.white,
                           image: DecorationImage(
-                              image: AssetImage('assets/images/dish1.png'),
+                              image: NetworkImage(widget.image),
                               fit: BoxFit.cover)),
                     ),
                     Container(
@@ -59,17 +72,32 @@ class _DishInfoState extends State<DishInfo> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Lasagna Rolls",
-                        style: TextStyle(
+                      Text(
+                        widget.label,
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 22,
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
+                      Text(
+                        widget.source,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13),
+                      ),
+                      const SizedBox(height: 8),
                       const Text(
-                        "Lasagna Roll Ups have the same elements and flavors of classic lasagna, except everything is rolled up into individual packets. They bake faster and are easier to serve, plus great for portion control!",
+                        "Visit for more details: ",
                         style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13),
+                      ),
+                      Text(
+                        widget.url,
+                        style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.normal,
                             fontSize: 13),
@@ -109,7 +137,7 @@ class _DishInfoState extends State<DishInfo> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                            children: List.generate(lasagnaIngredients.length,
+                            children: List.generate(widget.ingredients.length,
                                 (index) {
                           return Padding(
                             padding: const EdgeInsets.only(right: 8),
@@ -132,9 +160,9 @@ class _DishInfoState extends State<DishInfo> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             image: DecorationImage(
-                                                image: AssetImage(
-                                                    lasagnaIngredients[index]
-                                                        ['img']))),
+                                                image: NetworkImage(
+                                                    widget.ingredients[index]
+                                                        ['image']))),
                                       ),
                                       const SizedBox(height: 4),
                                       Column(
@@ -144,22 +172,22 @@ class _DishInfoState extends State<DishInfo> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            lasagnaIngredients[index]['name'],
+                                            widget.ingredients[index]['text'],
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 12),
+                                                fontSize: 10),
                                             textAlign: TextAlign.center,
                                           ),
-                                          Text(
-                                            lasagnaIngredients[index]
-                                                ['details'],
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 11),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                          // Text(
+                                          //   lasagnaIngredients[index]
+                                          //       ['details'],
+                                          //   style: const TextStyle(
+                                          //       color: Colors.black,
+                                          //       fontWeight: FontWeight.normal,
+                                          //       fontSize: 11),
+                                          //   textAlign: TextAlign.center,
+                                          // ),
                                         ],
                                       ),
                                     ],
@@ -194,15 +222,15 @@ class _DishInfoState extends State<DishInfo> {
                                 children: List.generate(lasagnaProcedure.length,
                                     (index) {
                                   return Column(
-                                    children: [
+                                    children: const [
                                       Text(
-                                        lasagnaProcedure[index],
-                                        style: const TextStyle(
+                                        "tba",
+                                        style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.normal,
                                             fontSize: 14),
                                       ),
-                                      const SizedBox(height: 3)
+                                      SizedBox(height: 3)
                                     ],
                                   );
                                 }),

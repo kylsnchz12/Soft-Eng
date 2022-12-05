@@ -33,8 +33,8 @@ class _FinderPageState extends State<FinderPage> {
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["hits"].forEach((element) {
-      RecipeModel recipeModel =
-          RecipeModel(image: '1', label: '1', url: '1', source: '1');
+      RecipeModel recipeModel = RecipeModel(
+          image: '1', label: '1', url: '1', source: '1', ingredients: []);
       recipeModel = RecipeModel.fromMap(element["recipe"]);
       recipes.add(recipeModel);
     });

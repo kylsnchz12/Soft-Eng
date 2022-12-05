@@ -142,7 +142,14 @@ class _ResultPageState extends State<ResultPage> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const DishInfo()),
+                            pageBuilder: (_, __, ___) => DishInfo(
+                                  image: widget.myRecipes[index].image,
+                                  ingredients:
+                                      widget.myRecipes[index].ingredients,
+                                  label: widget.myRecipes[index].label,
+                                  url: widget.myRecipes[index].url,
+                                  source: widget.myRecipes[index].source,
+                                )),
                       );
                     },
                     child: Stack(children: [
