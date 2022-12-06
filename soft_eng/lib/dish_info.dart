@@ -172,22 +172,21 @@ class _DishInfoState extends State<DishInfo> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            widget.ingredients[index]['text'],
+                                            widget.ingredients[index]['food'],
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 10),
                                             textAlign: TextAlign.center,
                                           ),
-                                          // Text(
-                                          //   lasagnaIngredients[index]
-                                          //       ['details'],
-                                          //   style: const TextStyle(
-                                          //       color: Colors.black,
-                                          //       fontWeight: FontWeight.normal,
-                                          //       fontSize: 11),
-                                          //   textAlign: TextAlign.center,
-                                          // ),
+                                          Text(
+                                            widget.ingredients[index]['text'],
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 8),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -224,7 +223,7 @@ class _DishInfoState extends State<DishInfo> {
                                   return Column(
                                     children: const [
                                       Text(
-                                        "tba",
+                                        " ",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.normal,
